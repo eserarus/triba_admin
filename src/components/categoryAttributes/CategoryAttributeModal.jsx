@@ -94,10 +94,8 @@ export default function CategoryAttributeModal({
   };
 
   // Arama filtresi
-  const filteredAttributes = attributes.filter(
-    (attr) =>
-      attr.name_en.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      attr.name_me.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredAttributes = attributes.filter((attr) =>
+    attr.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   console.log("Current Form Data:", formData);
@@ -129,8 +127,7 @@ export default function CategoryAttributeModal({
                   {editingAttribute ? "Özellik Düzenle" : "Özellik Ekle"}
                 </h3>
                 <p className="text-gray-600 text-sm">
-                  {selectedCategory?.name_en} / {selectedCategory?.name_me}{" "}
-                  kategorisine
+                  {selectedCategory?.name} kategorisine
                 </p>
               </div>
             </div>
@@ -207,7 +204,7 @@ export default function CategoryAttributeModal({
                         <div className="flex-1">
                           <div className="flex items-center space-x-2">
                             <span className="font-medium text-gray-900">
-                              {attr.name_en} / {attr.name_me}
+                              {attr.name}
                             </span>
                             <span
                               className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
@@ -255,22 +252,30 @@ export default function CategoryAttributeModal({
                   {
                     attributes.find(
                       (attr) => attr.id === Number(formData.attribute_id)
-                    )?.name_en
-                  }{" "}
-                  /{" "}
-                  {
-                    attributes.find(
-                      (attr) => attr.id === Number(formData.attribute_id)
-                    )?.name_me
+                    )?.name
                   }
                 </div>
-                <div className="text-sm text-gray-500">
-                  Tip:{" "}
-                  {
-                    attributes.find(
-                      (attr) => attr.id === Number(formData.attribute_id)
-                    )?.type
-                  }
+                <div className="text-sm text-gray-500 space-y-1">
+                  <div>
+                    Tip:{" "}
+                    {
+                      attributes.find(
+                        (attr) => attr.id === Number(formData.attribute_id)
+                      )?.type
+                    }
+                  </div>
+                  {attributes.find(
+                    (attr) => attr.id === Number(formData.attribute_id)
+                  )?.code && (
+                    <div>
+                      Kod:{" "}
+                      {
+                        attributes.find(
+                          (attr) => attr.id === Number(formData.attribute_id)
+                        )?.code
+                      }
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

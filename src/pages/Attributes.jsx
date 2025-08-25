@@ -14,7 +14,7 @@ function AttributesByCategory({ attributes, onEdit, onDelete, onValues }) {
   // Kategorilere göre gruplama
   const groupedAttributes = attributes.reduce((groups, attr) => {
     const categoryKey = attr.category
-      ? `${attr.category.name_en} / ${attr.category.name_me}`
+      ? attr.category.name
       : "Kategori Atanmamış";
     if (!groups[categoryKey]) {
       groups[categoryKey] = [];
@@ -89,10 +89,7 @@ function AttributesByCategory({ attributes, onEdit, onDelete, onValues }) {
               <thead className="bg-gray-50">
                 <tr>
                   <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    İngilizce Adı
-                  </th>
-                  <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Karadağca Adı
+                    Özellik Adı
                   </th>
                   <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Kod
@@ -115,10 +112,7 @@ function AttributesByCategory({ attributes, onEdit, onDelete, onValues }) {
                     className="hover:bg-gray-50 transition duration-150"
                   >
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {attr.name_en}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                      {attr.name_me}
+                      {attr.name}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                       {attr.code ? (

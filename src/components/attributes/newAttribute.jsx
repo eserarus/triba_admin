@@ -9,8 +9,7 @@ const TYPES = [
 
 export default function NewAttributeModal({ isOpen, onClose, onSave }) {
   const [formData, setFormData] = useState({
-    name_en: "",
-    name_me: "",
+    name: "",
     code: "",
     type: "text",
     is_required: false,
@@ -19,21 +18,19 @@ export default function NewAttributeModal({ isOpen, onClose, onSave }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name_me.trim()) return;
+    if (!formData.name.trim()) return;
 
     setIsLoading(true);
     try {
       const payload = {
-        name_en: formData.name_en,
-        name_me: formData.name_me,
+        name: formData.name,
         code: formData.code,
         type: formData.type,
         is_required: formData.is_required ? 1 : 0,
       };
       await onSave(payload);
       setFormData({
-        name_en: "",
-        name_me: "",
+        name: "",
         code: "",
         type: "text",
         is_required: false,
@@ -45,8 +42,7 @@ export default function NewAttributeModal({ isOpen, onClose, onSave }) {
 
   const handleClose = () => {
     setFormData({
-      name_en: "",
-      name_me: "",
+      name: "",
       code: "",
       type: "text",
       is_required: false,
@@ -108,10 +104,10 @@ export default function NewAttributeModal({ isOpen, onClose, onSave }) {
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
-          {/* English Name Field */}
+          {/* Name Field */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              İngilizce Adı
+              Özellik Adı <span className="text-red-500">*</span>
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -131,46 +127,12 @@ export default function NewAttributeModal({ isOpen, onClose, onSave }) {
               </div>
               <input
                 type="text"
-                value={formData.name_en}
+                value={formData.name}
                 onChange={(e) =>
-                  setFormData({ ...formData, name_en: e.target.value })
+                  setFormData({ ...formData, name: e.target.value })
                 }
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition duration-200"
-                placeholder="English attribute name"
-                maxLength={120}
-              />
-            </div>
-          </div>
-
-          {/* Montenegrin Name Field */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Karadağca Adı <span className="text-red-500">*</span>
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg
-                  className="w-5 h-5 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 716.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
-                  />
-                </svg>
-              </div>
-              <input
-                type="text"
-                value={formData.name_me}
-                onChange={(e) =>
-                  setFormData({ ...formData, name_me: e.target.value })
-                }
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition duration-200"
-                placeholder="Crnogorski naziv atributa"
+                placeholder="Özellik adını girin"
                 required
                 maxLength={120}
               />
@@ -284,7 +246,7 @@ export default function NewAttributeModal({ isOpen, onClose, onSave }) {
             </button>
             <button
               type="submit"
-              disabled={isLoading || !formData.name_me.trim()}
+              disabled={isLoading || !formData.name.trim()}
               className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg hover:from-purple-600 hover:to-pink-700 transition duration-200 disabled:opacity-50"
             >
               {isLoading ? "Kaydediliyor..." : "Kaydet"}

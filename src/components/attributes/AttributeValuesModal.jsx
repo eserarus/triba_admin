@@ -6,8 +6,7 @@ export default function AttributeValuesModal({ isOpen, attribute, onClose }) {
   const [loading, setLoading] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
   const [newValue, setNewValue] = useState({
-    value_en: "",
-    value_me: "",
+    name: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -31,12 +30,12 @@ export default function AttributeValuesModal({ isOpen, attribute, onClose }) {
 
   const handleAddValue = async (e) => {
     e.preventDefault();
-    if (!newValue.value_en.trim() || !newValue.value_me.trim()) return;
+    if (!newValue.name.trim()) return;
 
     setIsSubmitting(true);
     try {
       await api.post(`/admin/attributes/${attribute.id}/values`, newValue);
-      setNewValue({ value_en: "", value_me: "" });
+      setNewValue({ name: "" });
       setShowAddForm(false);
       await loadValues();
     } catch (error) {
@@ -59,7 +58,7 @@ export default function AttributeValuesModal({ isOpen, attribute, onClose }) {
 
   const handleClose = () => {
     setShowAddForm(false);
-    setNewValue({ value_en: "", value_me: "" });
+    setNewValue({ name: "" });
     onClose();
   };
 
@@ -92,7 +91,7 @@ export default function AttributeValuesModal({ isOpen, attribute, onClose }) {
                   Özellik Değerleri
                 </h3>
                 <p className="text-gray-600 text-sm">
-                  "{attribute?.name_en}" için mevcut değerler
+                  "{attribute?.name}" için mevcut değerler
                 </p>
               </div>
             </div>
@@ -149,44 +148,27 @@ export default function AttributeValuesModal({ isOpen, attribute, onClose }) {
                 Yeni Değer Ekle
               </h4>
               <form onSubmit={handleAddValue} className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      İngilizce Değer <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      value={newValue.value_en}
-                      onChange={(e) =>
-                        setNewValue({ ...newValue, value_en: e.target.value })
-                      }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition duration-200"
-                      placeholder="English value"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Karadağca Değer <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      value={newValue.value_me}
-                      onChange={(e) =>
-                        setNewValue({ ...newValue, value_me: e.target.value })
-                      }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition duration-200"
-                      placeholder="Crnogorska vrijednost"
-                      required
-                    />
-                  </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Değer <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={newValue.name}
+                    onChange={(e) =>
+                      setNewValue({ ...newValue, name: e.target.value })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition duration-200"
+                    placeholder="Değer girin"
+                    required
+                  />
                 </div>
                 <div className="flex items-center justify-end space-x-3">
                   <button
                     type="button"
                     onClick={() => {
                       setShowAddForm(false);
-                      setNewValue({ value_en: "", value_me: "" });
+                      setNewValue({ name: "" });
                     }}
                     className="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition duration-200"
                   >
@@ -194,11 +176,7 @@ export default function AttributeValuesModal({ isOpen, attribute, onClose }) {
                   </button>
                   <button
                     type="submit"
-                    disabled={
-                      isSubmitting ||
-                      !newValue.value_en.trim() ||
-                      !newValue.value_me.trim()
-                    }
+                    disabled={isSubmitting || !newValue.name.trim()}
                     className="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition duration-200 disabled:opacity-50"
                   >
                     {isSubmitting ? "Ekleniyor..." : "Ekle"}
@@ -251,20 +229,9 @@ export default function AttributeValuesModal({ isOpen, attribute, onClose }) {
                   <div className="flex-1">
                     <div className="flex items-center space-x-4">
                       <div className="flex-1">
-                        <div className="flex items-center space-x-2 mb-1">
-                          <span className="text-xs font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded">
-                            EN
-                          </span>
-                          <span className="text-sm font-medium text-gray-900">
-                            {value.value_en}
-                          </span>
-                        </div>
                         <div className="flex items-center space-x-2">
-                          <span className="text-xs font-medium text-green-600 bg-green-100 px-2 py-1 rounded">
-                            ME
-                          </span>
-                          <span className="text-sm text-gray-600">
-                            {value.value_me}
+                          <span className="text-sm font-medium text-gray-900">
+                            {value.name}
                           </span>
                         </div>
                       </div>

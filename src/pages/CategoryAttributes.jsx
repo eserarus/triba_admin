@@ -123,9 +123,7 @@ export default function CategoryAttributes() {
       organized.push({
         ...category,
         level: level,
-        displayName: `${prefix}${level > 0 ? " " : ""}${category.name_en} / ${
-          category.name_me
-        }`,
+        displayName: `${prefix}${level > 0 ? " " : ""}${category.name}`,
       });
 
       const children = categories.filter(
@@ -146,9 +144,7 @@ export default function CategoryAttributes() {
 
   // Arama filtresi
   const filteredCategories = createHierarchicalCategories(categories).filter(
-    (cat) =>
-      cat.name_en.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      cat.name_me.toLowerCase().includes(searchTerm.toLowerCase())
+    (cat) => cat.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -406,8 +402,7 @@ export default function CategoryAttributes() {
                   <div className="flex items-center justify-between mb-6">
                     <div>
                       <h2 className="text-xl font-semibold text-gray-900">
-                        ⚙️ {selectedCategory.name_en} /{" "}
-                        {selectedCategory.name_me}
+                        ⚙️ {selectedCategory.name}
                       </h2>
                       <p className="text-gray-600 text-sm">
                         Bu kategoriye atanmış özellikler
@@ -473,41 +468,49 @@ export default function CategoryAttributes() {
                               <div className="flex-1">
                                 <div className="flex items-center space-x-3 mb-2">
                                   <h4 className="font-medium text-gray-900">
-                                    {ca.attribute?.name_en || ca.name_en} /{" "}
-                                    {ca.attribute?.name_me || ca.name_me}
+                                    {ca.attribute?.name || ca.name}
                                   </h4>
-                                  <span
-                                    className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                                      (ca.attribute?.type || ca.type) === "text"
-                                        ? "bg-blue-100 text-blue-800"
+                                  <div className="flex items-center space-x-2 mb-2">
+                                    <span
+                                      className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                                        (ca.attribute?.type || ca.type) ===
+                                        "text"
+                                          ? "bg-blue-100 text-blue-800"
+                                          : (ca.attribute?.type || ca.type) ===
+                                            "number"
+                                          ? "bg-green-100 text-green-800"
+                                          : (ca.attribute?.type || ca.type) ===
+                                            "select"
+                                          ? "bg-purple-100 text-purple-800"
+                                          : (ca.attribute?.type || ca.type) ===
+                                            "checkbox"
+                                          ? "bg-orange-100 text-orange-800"
+                                          : "bg-gray-100 text-gray-800"
+                                      }`}
+                                    >
+                                      {(ca.attribute?.type || ca.type) ===
+                                      "text"
+                                        ? "Metin"
                                         : (ca.attribute?.type || ca.type) ===
                                           "number"
-                                        ? "bg-green-100 text-green-800"
+                                        ? "Sayı"
                                         : (ca.attribute?.type || ca.type) ===
                                           "select"
-                                        ? "bg-purple-100 text-purple-800"
+                                        ? "Seçmeli"
                                         : (ca.attribute?.type || ca.type) ===
                                           "checkbox"
-                                        ? "bg-orange-100 text-orange-800"
-                                        : "bg-gray-100 text-gray-800"
-                                    }`}
-                                  >
-                                    {(ca.attribute?.type || ca.type) === "text"
-                                      ? "Metin"
-                                      : (ca.attribute?.type || ca.type) ===
-                                        "number"
-                                      ? "Sayı"
-                                      : (ca.attribute?.type || ca.type) ===
-                                        "select"
-                                      ? "Seçmeli"
-                                      : (ca.attribute?.type || ca.type) ===
-                                        "checkbox"
-                                      ? "Çoklu Seçim"
-                                      : ca.attribute?.type || ca.type}
-                                  </span>
+                                        ? "Çoklu Seçim"
+                                        : ca.attribute?.type || ca.type}
+                                    </span>
+                                    {(ca.attribute?.code || ca.code) && (
+                                      <span className="inline-flex px-2 py-1 text-xs font-mono bg-gray-100 text-gray-700 rounded">
+                                        Kod: {ca.attribute?.code || ca.code}
+                                      </span>
+                                    )}
+                                  </div>
                                 </div>
 
-                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                                <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
                                   <div className="flex items-center space-x-2">
                                     <input
                                       type="checkbox"
@@ -541,8 +544,11 @@ export default function CategoryAttributes() {
                                       Liste Başına Tek
                                     </span>
                                   </div>
-                                  <div className="text-gray-700">
-                                    Sıra: {ca.sort_order}
+                                  <div className="text-gray-700 font-medium">
+                                    Sıra: {ca.sort_order || 0}
+                                  </div>
+                                  <div className="text-gray-700 font-medium">
+                                    Kod: {ca.attribute?.code || ca.code || "-"}
                                   </div>
                                 </div>
                               </div>

@@ -12,9 +12,7 @@ function createHierarchicalOptions(categories, excludeId = null) {
     const prefix = "──".repeat(level);
     options.push({
       id: category.id,
-      label: `${prefix}${level > 0 ? " " : ""}${category.name_en} / ${
-        category.name_me
-      }`,
+      label: `${prefix}${level > 0 ? " " : ""}${category.name}`,
       level: level,
     });
 
@@ -36,8 +34,7 @@ function createHierarchicalOptions(categories, excludeId = null) {
 
 export default function AddCategoryModal({ isOpen, onClose, onSave }) {
   const [formData, setFormData] = useState({
-    name_en: "",
-    name_me: "",
+    name: "",
     parent_id: "",
     icon: "",
     color: "#3B82F6",
@@ -63,14 +60,13 @@ export default function AddCategoryModal({ isOpen, onClose, onSave }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name_en.trim() || !formData.name_me.trim()) return;
+    if (!formData.name.trim()) return;
 
     setIsLoading(true);
     try {
       await onSave(formData);
       setFormData({
-        name_en: "",
-        name_me: "",
+        name: "",
         parent_id: "",
         icon: "",
         color: "#3B82F6",
@@ -82,8 +78,7 @@ export default function AddCategoryModal({ isOpen, onClose, onSave }) {
 
   const handleClose = () => {
     setFormData({
-      name_en: "",
-      name_me: "",
+      name: "",
       parent_id: "",
       icon: "",
       color: "#3B82F6",
@@ -188,44 +183,10 @@ export default function AddCategoryModal({ isOpen, onClose, onSave }) {
             </p>
           </div>
 
-          {/* English Name Field */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              İngilizce Adı <span className="text-red-500">*</span>
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg
-                  className="w-5 h-5 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
-                  />
-                </svg>
-              </div>
-              <input
-                type="text"
-                value={formData.name_en}
-                onChange={(e) =>
-                  setFormData({ ...formData, name_en: e.target.value })
-                }
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition duration-200"
-                placeholder="English category name"
-                required
-              />
-            </div>
-          </div>
-
           {/* Montenegrin Name Field */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Karadağca Adı <span className="text-red-500">*</span>
+              Kategori Adı <span className="text-red-500">*</span>
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -239,18 +200,18 @@ export default function AddCategoryModal({ isOpen, onClose, onSave }) {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
+                    d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 716.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
                   />
                 </svg>
               </div>
               <input
                 type="text"
-                value={formData.name_me}
+                value={formData.name}
                 onChange={(e) =>
-                  setFormData({ ...formData, name_me: e.target.value })
+                  setFormData({ ...formData, name: e.target.value })
                 }
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition duration-200"
-                placeholder="Crnogorski naziv kategorije"
+                placeholder="Kategori adını girin"
                 required
               />
             </div>
@@ -348,11 +309,7 @@ export default function AddCategoryModal({ isOpen, onClose, onSave }) {
             </button>
             <button
               type="submit"
-              disabled={
-                isLoading ||
-                !formData.name_en.trim() ||
-                !formData.name_me.trim()
-              }
+              disabled={isLoading || !formData.name.trim()}
               className="px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg hover:from-green-600 hover:to-emerald-700 transition duration-200 flex items-center space-x-2 disabled:opacity-50"
             >
               {isLoading ? (

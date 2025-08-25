@@ -92,10 +92,7 @@ export default function Categories() {
 
     // Eşleşen kategorileri bul
     items.forEach((item) => {
-      if (
-        item.name_en?.toLowerCase().includes(searchLower) ||
-        item.name_me?.toLowerCase().includes(searchLower)
-      ) {
+      if (item.name?.toLowerCase().includes(searchLower)) {
         matchingCategories.add(item.id);
 
         // Parent kategorileri de ekle
@@ -598,18 +595,15 @@ export default function Categories() {
                               {/* İkon varsa göster */}
                               {category.icon ? (
                                 <div className="w-full h-full flex items-center justify-center">
-                                  {/* PNG ikon varsa göster */}
-                                  <img
-                                    src={`http://127.0.0.1:8000/storage/category_icons/${category.icon}.png`}
-                                    alt={`${category.name_en} icon`}
-                                    className="w-full h-full object-contain p-1"
-                                    onError={(e) => {
-                                      // PNG yoksa Font Awesome ikonu göster
-                                      e.target.style.display = "none";
-                                      e.target.nextSibling.style.display =
-                                        "flex";
-                                    }}
-                                  />
+                                  {/* Font Awesome ikonu (PNG yerine direkt kullan) */}
+                                  <div
+                                    className="w-full h-full flex items-center justify-center"
+                                    style={{ color: "white" }}
+                                  >
+                                    <i
+                                      className={`fas fa-${category.icon}`}
+                                    ></i>
+                                  </div>
                                 </div>
                               ) : (
                                 /* İkon yoksa baş harfi göster */
@@ -622,7 +616,7 @@ export default function Categories() {
                                       : "text-xs"
                                   }`}
                                 >
-                                  {category.name_en?.charAt(0)?.toUpperCase()}
+                                  {category.name?.charAt(0)?.toUpperCase()}
                                 </span>
                               )}
                             </div>
@@ -640,7 +634,7 @@ export default function Categories() {
                                       category.level > 0 ? "text-sm" : ""
                                     }`}
                                   >
-                                    {category.name_en} / {category.name_me}
+                                    {category.name}
                                   </p>
                                 </div>
                                 {category.level === 0 ? (
@@ -683,8 +677,7 @@ export default function Categories() {
                                   category.level > 0 ? "text-xs" : "text-sm"
                                 }`}
                               >
-                                <span>🇬🇧 {category.name_en || "N/A"}</span>
-                                <span>🇲🇪 {category.name_me || "N/A"}</span>
+                                <span>🇲🇪 {category.name || "N/A"}</span>
                               </div>
                               {category.description && (
                                 <p
