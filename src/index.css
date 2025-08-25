@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+/* Reset body styles to work better with Tailwind */
+body {
+  margin: 0;
+}
